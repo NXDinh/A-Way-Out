@@ -55,7 +55,7 @@ reshape long v, i(region geofips geoname) j(year)
 ren v percap_real_inc
 replace year = year + 1999
  
-save "$datatemp/cencus_pop_demo", replace
+save "$datatemp/cencus_realpercapinc_state", replace
 *===============================================================================
 
 
@@ -66,7 +66,7 @@ save "$datatemp/cencus_pop_demo", replace
 *===============================================================================
 *Real Personal Income by state==================================================
 import delimited using "$dataraw/CAEMP25N__ALL_AREAS_2001_2019.csv", clear
-
+ 
 drop in 105535/105538
 drop if linecode == 1
 drop tablename   industryclassification 
@@ -76,12 +76,13 @@ drop if geoname == "Puerto Rico"
 replace geofips = subinstr(geofips, `"""', "", 2)
 destring region geofips, replace
 
-
+drop if geofips/1000 != round(geofips/1000)
+drop if geofips>90000
 
 reshape long v, i(region geofips geoname linecode description) j(year)
 ren v percap_real_inc
-replace year = year + 1999
+replace year = year + 1992
  
-save "$datatemp/cencus_pop_demo", replace
+save "$datatemp/cencus_employment_state", replace
 *===============================================================================
 
